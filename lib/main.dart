@@ -9,35 +9,60 @@ main() => runApp(PerguntaApp());
 class _PerguntaAppState extends State<PerguntaApp> {
   var _perguntaSelecionada = 0;
 
+  final List<Map<String, Object>> _perguntas = [
+    {
+      "texto": "Qual é sua cor favorita?",
+      "respostas": ["Vermelho", "Preto", "Branco", "Azul"]
+    },
+    {
+      "texto": "Qual é seu clube favorito?",
+      "respostas": ["São Paulo", "Palmeiras", "Santos", "Corinthians"]
+    },
+    {
+      "texto": "Qual é seu Animal favorito?",
+      "respostas": ["Cahorro", "Gato", "Coelho", "Hamster"]
+    },
+    {
+      "texto": "Qual seu instrutor favorito?",
+      "respostas": ["Leonardo", "Wagner", "André", "Bruno"]
+    }
+  ];
+
   void _responder() {
-    setState(() {
-      _perguntaSelecionada++;
-    });
+    if (temPerguntaSelecionada) {
+      setState(() {
+        _perguntaSelecionada++;
+      });
+    }
+  }
+
+  bool get temPerguntaSelecionada {
+    return _perguntaSelecionada < _perguntas.length;
   }
 
   @override
   Widget build(BuildContext context) {
-    final perguntas = [
-      'Qual é sua cor favorita?',
-      'Qual é seu clube favorito?',
-      'Qual é seu filme favorito?',
-      'Qual é seu hoobie favorito?',
-      'Qual é seu lugar favorito?',
-    ];
+    List<String> respostas = temPerguntaSelecionada
+        ? _perguntas[_perguntaSelecionada].cast()["respostas"]
+        : [];
+
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
           title: Text("Projeto Perguntas"),
         ),
-        body: Column(
-          children: [
-            Questao(perguntas[_perguntaSelecionada]),
-            Resposta("Resposta 1",_responder),
-            Resposta("Resposta 2",_responder),
-            Resposta("Resposta 3",_responder),
-            Resposta("Resposta 4",_responder),
-          ],
-        ),
+        body: temPerguntaSelecionada
+            ? Column(
+                children: [
+                  Questao(_perguntas[_perguntaSelecionada]["texto"].toString()),
+                  ...respostas.map((t) => Resposta(t, _responder)).toList(),
+                ],
+              )
+            : Center(
+                child: Text(
+                "Parabéns!",
+                style: TextStyle(fontSize: 28),
+              )),
       ),
     );
   }
