@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
 class Questao extends StatelessWidget {
   final String texto;
 
   // ignore: prefer_const_constructors_in_immutables
-  Questao(this.texto, {Key? key}) : super(key: key);
+  Questao(this.texto);
 
   @override
   Widget build(BuildContext context) {
